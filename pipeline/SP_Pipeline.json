@@ -1,0 +1,87 @@
+{
+	"name": "SP_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "in active user ids",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_Azure_SQL_inactiveusers",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachID",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "in active user ids",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('in active user ids').output.pipelineReturnValue",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "SP_deleteID",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_inactiveusers]",
+								"storedProcedureParameters": {
+									"ID": {
+										"value": {
+											"value": "@item()",
+											"type": "Expression"
+										},
+										"type": "Int16"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_AzureSqlDatabase1_user_db",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "Data Transformation"
+		},
+		"annotations": []
+	}
+}
