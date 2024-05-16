@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "Append",
 	"properties": {
 		"activities": [
 			{
@@ -49,6 +49,9 @@
 			"output": {
 				"type": "Array"
 			}
+		},
+		"folder": {
+			"name": "Data Movement Activities/Filter"
 		},
 		"annotations": []
 	}
