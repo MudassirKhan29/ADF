@@ -1,14 +1,9 @@
 {
-	"name": "DS_ADSL_adf_container_user_profiles_raw_copy1",
+	"name": "Faildataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ADLS_eyadfstorageacc",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FileNameDS": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
