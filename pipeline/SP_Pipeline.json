@@ -41,7 +41,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('in active user ids').output.pipelineReturnValue",
+						"value": "@activity('in active user ids').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -63,10 +63,10 @@
 								"storedProcedureParameters": {
 									"ID": {
 										"value": {
-											"value": "@item()",
+											"value": "@item().id",
 											"type": "Expression"
 										},
-										"type": "Int16"
+										"type": "Int32"
 									}
 								}
 							},
