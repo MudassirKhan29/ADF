@@ -63,6 +63,9 @@
 				"defaultValue": "users_002.csv"
 			}
 		},
+		"folder": {
+			"name": "Copy Activity"
+		},
 		"annotations": [],
 		"lastPublishTime": "2024-05-14T06:27:33Z"
 	},
