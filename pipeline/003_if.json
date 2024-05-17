@@ -1,0 +1,79 @@
+{
+	"name": "003_if",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEachCity",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('Listofcities')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Append City",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FinalListofCities",
+								"value": {
+									"value": "@Concat('City=',item())",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEachCity",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Output",
+					"value": {
+						"value": "@variables('FinalListofCities')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Listofcities": {
+				"type": "Array",
+				"defaultValue": [
+					"New York",
+					"London",
+					"Chennai",
+					"Tokyo"
+				]
+			},
+			"FinalListofCities": {
+				"type": "Array"
+			},
+			"Output": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "Control Flow Activities/Conditional Activities/For Each"
+		},
+		"annotations": []
+	}
+}
