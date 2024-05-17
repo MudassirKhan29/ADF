@@ -1,0 +1,107 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach File",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Append FileName",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FinalList",
+								"value": {
+									"value": "@item().name",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Output",
+					"value": {
+						"value": "@variables('FinalList')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_ADSL_adf_container_user_profiles_raw",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			}
+		],
+		"variables": {
+			"FinalList": {
+				"type": "Array"
+			},
+			"Output": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "Control Flow Activities/Conditional Activities/For Each"
+		},
+		"annotations": []
+	}
+}
