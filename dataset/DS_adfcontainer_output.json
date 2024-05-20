@@ -1,0 +1,23 @@
+{
+	"name": "DS_adfcontainer_output",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_employee_output",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "employeeoutput",
+				"fileSystem": "adf-container"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
