@@ -1,0 +1,41 @@
+{
+	"name": "DS_tableoutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_employee_output",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SchemaNameDS": {
+				"type": "string"
+			},
+			"TablenameDS": {
+				"type": "string"
+			},
+			"filenameDS": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filenameDS",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('employeeoutput','/',dataset().SchemaNameDS,'/',dataset().TablenameDS)",
+					"type": "Expression"
+				},
+				"fileSystem": "adf-container"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

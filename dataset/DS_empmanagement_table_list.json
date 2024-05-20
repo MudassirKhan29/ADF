@@ -1,0 +1,12 @@
+{
+	"name": "DS_empmanagement_table_list",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_empmanagementdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
