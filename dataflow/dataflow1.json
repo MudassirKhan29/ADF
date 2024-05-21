@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "EmployeeDataset"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSql_departmenttable",
+						"type": "DatasetReference"
+					},
+					"name": "Departmenttable"
 				}
 			],
 			"sinks": [
@@ -18,10 +25,13 @@
 						"referenceName": "DS_adfcontainer_output",
 						"type": "DatasetReference"
 					},
-					"name": "ADLSOutputSink"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
+				{
+					"name": "join1"
+				},
 				{
 					"name": "select1"
 				}
@@ -42,14 +52,27 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> EmployeeDataset",
-				"EmployeeDataset select(mapColumn(",
+				"source(output(",
+				"          DepartmentID as integer,",
+				"          DepartmentName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Departmenttable",
+				"EmployeeDataset, Departmenttable join(EmployeeDataset@DepartmentID == Departmenttable@DepartmentID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
 				"          EmployeeID,",
 				"          FirstName,",
 				"          LastName,",
 				"          Email,",
 				"          PhoneNumber,",
 				"          HireDate,",
-				"          DepartmentID,",
+				"          DepartmentID = EmployeeDataset@DepartmentID,",
 				"          Salary,",
 				"          MANAGERID",
 				"     ),",
@@ -61,7 +84,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> ADLSOutputSink"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
